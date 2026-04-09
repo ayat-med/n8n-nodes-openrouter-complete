@@ -1,11 +1,19 @@
 {
 	"name": "n8n-nodes-openrouter-complete",
-	"version": "0.1.0",
-	"description": "",
+	"version": "1.0.0",
+	"description": "n8n community node for OpenRouter — send prompts to 200+ AI models including GPT-4o, Claude, Gemini, and Llama.",
 	"license": "MIT",
-	"homepage": "",
+	"homepage": "https://github.com/ayatuallah/n8n-nodes-openrouter-complete",
 	"keywords": [
-		"n8n-community-node"
+		"n8n-community-node",
+		"n8n",
+		"n8n-nodes",
+		"github",
+		"github-issues",
+		"openrouter",
+		"ai",
+		"llm",
+		"automation"
 	],
 	"author": {
 		"name": "Ayatullah Ayat",
@@ -13,7 +21,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/<...>/n8n-nodes-<...>.git"
+		"url": "https://github.com/ayatuallah/n8n-nodes-openrouter-complete.git"
 	},
 	"scripts": {
 		"build": "n8n-node build",
@@ -31,13 +39,9 @@
 		"n8nNodesApiVersion": 1,
 		"strict": false,
 		"credentials": [
-			"dist/credentials/GithubIssuesApi.credentials.js",
-			"dist/credentials/GithubIssuesOAuth2Api.credentials.js",
 			"dist/credentials/OpenRouterApi.credentials.js"
 		],
 		"nodes": [
-			"dist/nodes/GithubIssues/GithubIssues.node.js",
-			"dist/nodes/Example/Example.node.js",
 			"dist/nodes/OpenRouter/OpenRouter.node.js"
 		]
 	},
