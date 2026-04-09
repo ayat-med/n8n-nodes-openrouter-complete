@@ -12,7 +12,7 @@ export class OpenRouter implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'OpenRouter',
 		name: 'openRouter',
-		icon: { light: 'file:openrouter-svg.svg', dark: 'file:openrouter-svg.svg' },
+		icon: 'file:openrouter.svg',
 		group: ['transform'],
 		version: 1,
 		description: 'Send prompts to 200+ AI models via OpenRouter',
