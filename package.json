@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-openrouter-complete",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "n8n community node for OpenRouter — send prompts to 200+ AI models including GPT-4o, Claude, Gemini, and Llama.",
 	"license": "MIT",
 	"homepage": "https://github.com/ayat-med/n8n-nodes-openrouter-complete",
