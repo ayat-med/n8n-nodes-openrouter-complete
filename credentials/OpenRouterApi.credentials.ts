@@ -3,11 +3,13 @@ import type {
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
+	Icon,
 } from 'n8n-workflow';
 
 export class OpenRouterApi implements ICredentialType {
 	name = 'openRouterApi';
 	displayName = 'OpenRouter API';
+	icon: Icon = { light: 'file:openrouterlight.svg', dark: 'file:openrouter.svg' };
 	documentationUrl = 'https://openrouter.ai/docs#authentication';
 
 	properties: INodeProperties[] = [

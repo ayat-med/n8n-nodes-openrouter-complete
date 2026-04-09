@@ -16,6 +16,7 @@ export class OpenRouter implements INodeType {
 		group: ['transform'],
 		version: 1,
 		description: 'Send prompts to 200+ AI models via OpenRouter',
+		usableAsTool: true,
 		defaults: {
 			name: 'OpenRouter',
 		},
@@ -34,17 +35,17 @@ export class OpenRouter implements INodeType {
 				type: 'options',
 				options: [
 					{ name: 'All', value: 'all' },
-					{ name: 'Text', value: 'text' },
-					{ name: 'Image', value: 'image' },
 					{ name: 'Audio', value: 'audio' },
-					{ name: 'Video', value: 'video' },
 					{ name: 'Embeddings', value: 'embeddings' },
+					{ name: 'Image', value: 'image' },
+					{ name: 'Text', value: 'text' },
+					{ name: 'Video', value: 'video' },
 				],
 				default: 'all',
 				description: 'Filter models by their output modalities',
 			},
 			{
-				displayName: 'Model',
+				displayName: 'Model Name or ID',
 				name: 'model',
 				type: 'options',
 				typeOptions: {
@@ -53,7 +54,7 @@ export class OpenRouter implements INodeType {
 				},
 				default: '',
 				required: true,
-				description: 'The model to use. Fetched based on your modality selection.',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 			},
 			{
 				displayName: 'Prompt',
@@ -111,7 +112,7 @@ export class OpenRouter implements INodeType {
 						description: model.description || `Model ID: ${model.id}`,
 					}));
 				} catch (error) {
-					throw new Error(`Failed to fetch models: ${(error as Error).message}`);
+					throw new NodeOperationError(this.getNode(), `Failed to fetch models: ${(error as Error).message}`);
 				}
 			},
 		},
