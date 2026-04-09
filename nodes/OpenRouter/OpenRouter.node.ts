@@ -1,5 +1,7 @@
 import {
   IExecuteFunctions,
+  ILoadOptionsFunctions,
+  INodePropertyOptions,
   INodeType,
   INodeTypeDescription,
 } from 'n8n-workflow';
@@ -8,6 +10,7 @@ export class OpenRouter implements INodeType {
   description: INodeTypeDescription = {
     displayName: 'OpenRouter',
     name: 'openRouter',
+    icon: { light: 'file:openrouter-svg.svg', dark: 'file:openrouter-svg.svg' },
     group: ['transform'],
     version: 1,
     description: 'Send requests to OpenRouter API',
@@ -24,11 +27,31 @@ export class OpenRouter implements INodeType {
     ],
     properties: [
       {
+        displayName: 'Output Modalities',
+        name: 'output_modalities',
+        type: 'options',
+        options: [
+          { name: 'All', value: 'all' },
+          { name: 'Text', value: 'text' },
+          { name: 'Image', value: 'image' },
+          { name: 'Audio', value: 'audio' },
+          { name: 'Video', value: 'video' },
+          { name: 'Embeddings', value: 'embeddings' },
+        ],
+        default: 'all',
+        description: 'Filter models by their output modalities',
+      },
+      {
         displayName: 'Model',
         name: 'model',
-        type: 'string',
-        default: 'openai/gpt-4o',
-        description: 'The model to use. See <a href="https://openrouter.ai/models">OpenRouter Models</a>.',
+        type: 'options',
+        typeOptions: {
+          loadOptionsMethod: 'getModels',
+          loadOptionsDependsOn: ['output_modalities'],
+        },
+        default: '',
+        required: true,
+        description: 'The model to use. Fetched based on your modality selection.',
       },
       {
         displayName: 'Prompt',
@@ -56,6 +79,36 @@ export class OpenRouter implements INodeType {
         description: 'What sampling temperature to use, between 0 and 2.',
       },
     ],
+  };
+
+  methods = {
+    loadOptions: {
+      async getModels(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+        const modalities = this.getCurrentNodeParameter('output_modalities') as string;
+        const queryParams = modalities !== 'all' ? `?output_modalities=${modalities}` : '';
+        const url = `https://openrouter.ai/api/v1/models${queryParams}`;
+
+        try {
+          const response = await this.helpers.request({
+            method: 'GET',
+            url,
+            json: true,
+          });
+
+          if (!response.data || !Array.isArray(response.data)) {
+            return [];
+          }
+
+          return response.data.map((model: any) => ({
+            name: model.name || model.id,
+            value: model.id,
+            description: model.description || `Model ID: ${model.id}`,
+          }));
+        } catch (error) {
+          throw new Error(`Failed to fetch models: ${error.message}`);
+        }
+      },
+    },
   };
 
   async execute(this: IExecuteFunctions) {
